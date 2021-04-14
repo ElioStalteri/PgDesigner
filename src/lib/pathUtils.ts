@@ -55,26 +55,26 @@ export function drawPath({ x: x0, y: y0, width: width0 }, { x: x1, y: y1, width:
 
 function calculatePoints(absoluteStart, absoluteEnd, relativeStart, relativeEnd) {
     const points = []
-    let tmpPoint = { ...absoluteStart }
-    points.push(Object.values(tmpPoint))
-    tmpPoint = { ...relativeStart }
-    points.push(Object.values(tmpPoint))
-    if ((absoluteStart.x > absoluteEnd.x && tmpPoint.x > relativeEnd.x) || (absoluteStart.x < absoluteEnd.x && tmpPoint.x < relativeEnd.x)) {
-        tmpPoint.x += (relativeEnd.x - tmpPoint.x) / 2
-        points.push(Object.values(tmpPoint))
+    let nextPoint = { ...absoluteStart }
+    points.push(Object.values(nextPoint))
+    nextPoint = { ...relativeStart }
+    points.push(Object.values(nextPoint))
+    if ((absoluteStart.x > absoluteEnd.x && nextPoint.x > relativeEnd.x) || (absoluteStart.x < absoluteEnd.x && nextPoint.x < relativeEnd.x)) {
+        nextPoint.x += (relativeEnd.x - nextPoint.x) / 2
+        points.push(Object.values(nextPoint))
     }
-    tmpPoint.y += (absoluteEnd.y - absoluteStart.y) / 2//(y1-y0)/2
-    points.push(Object.values(tmpPoint))
-    if (absoluteStart.x > absoluteEnd.x && tmpPoint.x < relativeEnd.x) {
-        tmpPoint.x += relativeEnd.x - tmpPoint.x
+    nextPoint.y += (absoluteEnd.y - absoluteStart.y) / 2//(y1-y0)/2
+    points.push(Object.values(nextPoint))
+    if (absoluteStart.x > absoluteEnd.x && nextPoint.x < relativeEnd.x) {
+        nextPoint.x += relativeEnd.x - nextPoint.x
     }
-    if (absoluteStart.x < absoluteEnd.x && tmpPoint.x > relativeEnd.x) {
-        tmpPoint.x -= tmpPoint.x - relativeEnd.x
+    if (absoluteStart.x < absoluteEnd.x && nextPoint.x > relativeEnd.x) {
+        nextPoint.x -= nextPoint.x - relativeEnd.x
     }
-    points.push(Object.values(tmpPoint))
+    points.push(Object.values(nextPoint))
 
-    tmpPoint.y += (absoluteEnd.y - absoluteStart.y) / 2//(y1-y0)/2
-    points.push(Object.values(tmpPoint))
+    nextPoint.y += (absoluteEnd.y - absoluteStart.y) / 2//(y1-y0)/2
+    points.push(Object.values(nextPoint))
     points.push(Object.values(absoluteEnd))
 
     return points.map(([x,y])=>[Math.round(x),Math.round(y)])
