@@ -2,6 +2,7 @@ import { writable } from "svelte/store";
 
 let SCALE = 1
 let MOVE = [0, 0]
+let adjustMouseMovement = 0.14;
 
 export const transform = writable(getTransformViewBox())
 
@@ -15,12 +16,12 @@ function scale(delta: number) {
 }
 
 function move(delta: [number, number]) {
-    MOVE = [MOVE[0] + delta[0] * 0.54, MOVE[1] + delta[1] * 0.54];
+    MOVE = [MOVE[0] + delta[0] * adjustMouseMovement, MOVE[1] + delta[1] * adjustMouseMovement];
     transform.set(getTransformViewBox());
 }
 
 function moveObject(delta: [number, number]) {
-    return [delta[0] * 0.54 / SCALE, delta[1] * 0.54 / SCALE];
+    return [delta[0] * adjustMouseMovement / SCALE, delta[1] * adjustMouseMovement / SCALE];
 }
 
 let lastMousePos = null;

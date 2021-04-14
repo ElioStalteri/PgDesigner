@@ -77,7 +77,7 @@ function calculatePoints(absoluteStart, absoluteEnd, relativeStart, relativeEnd)
     points.push(Object.values(tmpPoint))
     points.push(Object.values(absoluteEnd))
 
-    return points
+    return points.map(([x,y])=>[Math.round(x),Math.round(y)])
 }
 
 const sweepFl = (S, V, E) => angle(E, S, V) > 0 ? 0 : 1;
