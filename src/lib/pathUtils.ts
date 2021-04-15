@@ -53,7 +53,7 @@ export function drawPath({ x: x0, y: y0, width: width0 }, { x: x1, y: y1, width:
     return convertToPathWithCurve(calculatePoints(absoluteStart, absoluteEnd, relativeStart, relativeEnd))
 }
 
-function calculatePoints(absoluteStart, absoluteEnd, relativeStart, relativeEnd) {
+function calculatePoints(absoluteStart, absoluteEnd, relativeStart, relativeEnd):[number,number][] {
     const points = []
     let nextPoint = { ...absoluteStart }
     points.push(Object.values(nextPoint))
@@ -83,7 +83,7 @@ function calculatePoints(absoluteStart, absoluteEnd, relativeStart, relativeEnd)
 const sweepFl = (S, V, E) => angle(E, S, V) > 0 ? 0 : 1;
 const angle = ([a, b], [c, d], [e, f]) => (Math.atan2(f - d, e - c) - Math.atan2(b - d, a - c) + 3 * Math.PI) % (2 * Math.PI) - Math.PI;
 
-function convertToPathWithCurve(points: any[]) {
+function convertToPathWithCurve(points: [number,number][]) {
     const newPoints = []
     points.forEach((value, index, array) => {
         if (index != 0 && index != array.length - 1) {
