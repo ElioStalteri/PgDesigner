@@ -58,5 +58,5 @@
 	</g>
 </svg>
 
-<style>
+<style style lang="postcss">
 </style>
