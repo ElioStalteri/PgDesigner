@@ -3,7 +3,6 @@
 </script>
 
 <script lang="ts">
-	import NewTable from '$lib/NewTable.svelte';
 	import { drawPath } from '$lib/pathUtils';
 
 	import Table from '$lib/Table.svelte';
@@ -41,7 +40,7 @@
 <svelte:body />
 <div
 	bind:this={canvasEl}
-	class=" block relative w-full h-screen overflow-hidden"
+	class=" block relative w-full h-screen overflow-hidden bg-gray-50"
 	style="background-color:#f1f6f8;"
 	on:mousedown|stopPropagation={mouseEvent('down')}
 	on:mousemove|stopPropagation={mouseEvent('move')}
@@ -65,13 +64,10 @@
 			stroke-width="1.5"
 		/>
 	</g>
-	<!-- {#each tables as tableName}
-		<Table bind:x={data.tables[tableName].x} bind:y={data.tables[tableName].y} bind:width={data.tables[tableName].width} />
-	{/each} -->
 </svg>
 	<div class=" block absolute inset-0" style="transform-origin: 50% 50%;transform:{$transform};">
 		{#each tables as tableName}
-			<NewTable
+			<Table
 				bind:x={data.tables[tableName].x}
 				bind:y={data.tables[tableName].y}
 				bind:width={data.tables[tableName].width}
