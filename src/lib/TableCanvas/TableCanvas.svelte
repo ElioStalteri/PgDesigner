@@ -89,7 +89,10 @@
 								data.tables[data.links[linkName].to.table].y +
 								data.tables[data.links[linkName].to.table].columns[data.links[linkName].to.column]
 									.topDistance
-						}
+						},
+                        data.tables[data.links[linkName].from.table].columns[
+									data.links[linkName].from.column
+								].topDistance
 					)}
 					pointer-events="visibleStroke"
 					version="1.1"

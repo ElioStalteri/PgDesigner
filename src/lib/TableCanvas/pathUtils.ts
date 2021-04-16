@@ -39,25 +39,26 @@
 
 
 
-export function drawPath({ x: x0, y: y0, width: width0 }, { x: x1, y: y1, width: width1 }) {
+export function drawPath({ x: x0, y: y0, width: width0 }, { x: x1, y: y1, width: width1 },adjustPath) {
+    const distanceFromObject = 10
     const absoluteStart = { x: x0 + width0 / 2, y: y0 }
     const absoluteEnd = { x: x1 + width0 / 2, y: y1 }
     const relativeStart = {
-        x: absoluteStart.x + (absoluteStart.x > absoluteEnd.x ? -width0 / 2 - 31 : +width0 / 2 + 31),
+        x: absoluteStart.x + (absoluteStart.x > absoluteEnd.x ? -width0 / 2 - distanceFromObject : +width0 / 2 + distanceFromObject),
         y: absoluteStart.y
     }
     const relativeEnd = {
-        x: absoluteEnd.x + (absoluteStart.x > absoluteEnd.x ? +width1 / 2 + 31 : -width1 / 2 - 31),
+        x: absoluteEnd.x + (absoluteStart.x > absoluteEnd.x ? +width1 / 2 + distanceFromObject : -width1 / 2 - distanceFromObject),
         y: absoluteStart.y
     }
-    return convertToPathWithCurve(calculatePoints(absoluteStart, absoluteEnd, relativeStart, relativeEnd))
+    return convertToPathWithCurve(calculatePoints(absoluteStart, absoluteEnd, relativeStart, relativeEnd,adjustPath*0.3))
 }
 
-function calculatePoints(absoluteStart, absoluteEnd, relativeStart, relativeEnd):[number,number][] {
+function calculatePoints(absoluteStart, absoluteEnd, relativeStart, relativeEnd,adjustPath):[number,number][] {
     const points = []
     let nextPoint = { ...absoluteStart }
     points.push(Object.values(nextPoint))
-    nextPoint = { ...relativeStart }
+    nextPoint = { ...relativeStart,x:relativeStart.x +adjustPath*(relativeStart.x - absoluteStart.x)/Math.abs(relativeStart.x - absoluteStart.x) }
     points.push(Object.values(nextPoint))
     if ((absoluteStart.x > absoluteEnd.x && nextPoint.x > relativeEnd.x) || (absoluteStart.x < absoluteEnd.x && nextPoint.x < relativeEnd.x)) {
         nextPoint.x += (relativeEnd.x - nextPoint.x) / 2
@@ -66,10 +67,10 @@ function calculatePoints(absoluteStart, absoluteEnd, relativeStart, relativeEnd)
     nextPoint.y += (absoluteEnd.y - absoluteStart.y) / 2//(y1-y0)/2
     points.push(Object.values(nextPoint))
     if (absoluteStart.x > absoluteEnd.x && nextPoint.x < relativeEnd.x) {
-        nextPoint.x += relativeEnd.x - nextPoint.x
+        nextPoint.x += relativeEnd.x - nextPoint.x + adjustPath 
     }
     if (absoluteStart.x < absoluteEnd.x && nextPoint.x > relativeEnd.x) {
-        nextPoint.x -= nextPoint.x - relativeEnd.x
+        nextPoint.x -= nextPoint.x - relativeEnd.x + adjustPath 
     }
     points.push(Object.values(nextPoint))
 
