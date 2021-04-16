@@ -40,8 +40,8 @@
 
 
 export function drawPath({ x: x0, y: y0, width: width0 }, { x: x1, y: y1, width: width1 }) {
-    const absoluteStart = { x: x0 + width0 / 2, y: y0 + 50 }
-    const absoluteEnd = { x: x1 + width0 / 2, y: y1 + 50 }
+    const absoluteStart = { x: x0 + width0 / 2, y: y0 }
+    const absoluteEnd = { x: x1 + width0 / 2, y: y1 }
     const relativeStart = {
         x: absoluteStart.x + (absoluteStart.x > absoluteEnd.x ? -width0 / 2 - 31 : +width0 / 2 + 31),
         y: absoluteStart.y
@@ -97,7 +97,7 @@ function convertToPathWithCurve(points: [number,number][]) {
                 value[0] + 10 * (-value[0] + nextPoint[0]) / (value[0] - nextPoint[0] != 0 ? Math.abs(value[0] - nextPoint[0]) : 1),
                 value[1] + 10 * (-value[1] + nextPoint[1]) / (value[1] - nextPoint[1] != 0 ? Math.abs(value[1] - nextPoint[1]) : 1)
             ]
-            if (nextPoint[0] == prevPoint[0] || nextPoint[1] == prevPoint[1]) {
+            if (Math.abs(nextPoint[0] - prevPoint[0]) <10 || Math.abs(nextPoint[1] - prevPoint[1])<10) {
                 newPoints.push({ cmd: "L", point: value })
             } else {
                 newPoints.push({ cmd: "L", point: line })

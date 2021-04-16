@@ -3,78 +3,58 @@
 </script>
 
 <script lang="ts">
-	import { drawPath } from '$lib/pathUtils';
+	import TableCanvas from './../lib/TableCanvas/TableCanvas.svelte';
 
-	import Table from '$lib/Table.svelte';
-	import { mouseEvent, transform } from '$lib/transform';
-
-	let data = {
+	let data = { // this is an example format
 		tables: {
 			table1: {
 				name: 'table1',
+				columns: {
+					id: {
+						name: 'id',
+                        indexType: "primary key", // Primary key Unique key Index None
+                        type:"int"
+					},
+					email: {
+						name: 'email',
+                        indexType: "unique key", // Primary key Unique key Index None
+                        type:"int"
+					}
+				},
 				x: 0,
 				y: 0,
 				width: 0
 			},
 			table2: {
 				name: 'table2',
+				columns: {
+					id: {
+						name: 'id',
+                        indexType: "primary key", // Primary key Unique key Index None
+                        type:"int"
+					},
+					email: {
+						name: 'email',
+                        indexType: "unique key", // Primary key Unique key Index None
+                        type:"int"
+					}
+				},
 				x: 0,
 				y: 0,
 				width: 0
 			}
 		},
 		links: {
-			link1: { from: 'table1', to: 'table2' }
+			link1: { from: { table: 'table1', column: 'id' }, to: { table: 'table2', column: 'id' } },
+			link2: { from: { table: 'table1', column: 'email' }, to: { table: 'table2', column: 'email' } }
 		}
 	};
-	let tables = Object.keys(data.tables);
+	
 
-
-	let canvasEl:HTMLElement
-	let viewBox = "0 0 0 0"
-	$: if(canvasEl){
-		viewBox = `0 0 ${canvasEl.getBoundingClientRect().width} ${canvasEl.getBoundingClientRect().height}`
-	}
+	
 </script>
 
-<svelte:body />
-<div
-	bind:this={canvasEl}
-	class=" block relative w-full h-screen overflow-hidden bg-gray-50"
-	style="background-color:#f1f6f8;"
-	on:mousedown|stopPropagation={mouseEvent('down')}
-	on:mousemove|stopPropagation={mouseEvent('move')}
-	on:mouseup|stopPropagation={mouseEvent('up')}
-	on:mousewheel={mouseEvent('scroll')}
->
-<svg
-	xmlns="http://www.w3.org/2000/svg"
-	style="position:absolute;top:0;left:0;width:100%;height:100%;"
-	viewBox={viewBox}
->
-	<g style="width:100%;height:100%;transform-origin: 50% 50%;" transform={$transform}>
-		<path
-			d={drawPath(data.tables.table1, data.tables.table2)}
-			pointer-events="visibleStroke"
-			version="1.1"
-			xmlns="http://www.w3.org/2000/svg"
-			fill="none"
-			stroke="#A0AEC0"
-			style=""
-			stroke-width="1.5"
-		/>
-	</g>
-</svg>
-	<div class=" block absolute inset-0" style="transform-origin: 50% 50%;transform:{$transform};">
-		{#each tables as tableName}
-			<Table
-				bind:x={data.tables[tableName].x}
-				bind:y={data.tables[tableName].y}
-				bind:width={data.tables[tableName].width}
-			/>
-		{/each}
-	</div>
-</div>
+<TableCanvas {data} />
 
 <style style lang="postcss">
 </style>

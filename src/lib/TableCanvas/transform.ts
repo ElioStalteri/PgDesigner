@@ -1,8 +1,9 @@
 import { writable } from "svelte/store";
 
 let SCALE = 1
+const adjustScale = 0.1;
 let MOVE = [0, 0]
-let adjustMouseMovement = 1;
+const adjustMouseMovement = 1;
 
 export const transform = writable(getTransformViewBox())
 
@@ -11,7 +12,7 @@ function getTransformViewBox() {
 }
 
 function scale(delta: number) {
-    SCALE += delta * 0.025;
+    SCALE += delta * adjustScale;
     transform.set(getTransformViewBox());
 }
 

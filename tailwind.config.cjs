@@ -18,17 +18,15 @@ module.exports = {
 	theme: {
 		extend: {
 			spacing: {
-				...Array.from(Array(100).keys()).reduce((acc,v)=>({...acc,[`${v+1}px`]:`${v+1}px`}),{})
-			}
+				...Array.from(Array(100).keys()).reduce((acc, v) => ({ ...acc, [`${v + 1}px`]: `${v + 1}px` }), {})
+			},
+			textIndent: theme => theme('spacing'),
 		},
 	},
 	variants: {
 		extend: {},
 	},
 	plugins: [
-		require('tailwindcss-pixel-dimensions')({
-			width: {},
-			height: {}
-		}),
+		require('tailwindcss-text-indent')(),
 	],
 };
