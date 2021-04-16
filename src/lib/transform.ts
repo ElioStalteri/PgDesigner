@@ -2,7 +2,7 @@ import { writable } from "svelte/store";
 
 let SCALE = 1
 let MOVE = [0, 0]
-let adjustMouseMovement = 0.5;
+let adjustMouseMovement = 1;
 
 export const transform = writable(getTransformViewBox())
 

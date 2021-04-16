@@ -3,6 +3,7 @@
 </script>
 
 <script lang="ts">
+	import NewTable from '$lib/NewTable.svelte';
 	import { drawPath } from '$lib/pathUtils';
 
 	import Table from '$lib/Table.svelte';
@@ -14,13 +15,13 @@
 				name: 'table1',
 				x: 0,
 				y: 0,
-				width:0,
+				width: 0
 			},
 			table2: {
 				name: 'table2',
 				x: 0,
 				y: 0,
-				width:0,
+				width: 0
 			}
 		},
 		links: {
@@ -28,20 +29,31 @@
 		}
 	};
 	let tables = Object.keys(data.tables);
+
+
+	let canvasEl:HTMLElement
+	let viewBox = "0 0 0 0"
+	$: if(canvasEl){
+		viewBox = `0 0 ${canvasEl.getBoundingClientRect().width} ${canvasEl.getBoundingClientRect().height}`
+	}
 </script>
 
-<svelte:body on:mousewheel={mouseEvent('scroll')} />
-<svg
-	xmlns="http://www.w3.org/2000/svg"
-	style="position:fixed;top:0;left:0;width:100%;height:100%;background-color:#f1f6f8;"
-	viewBox="0 0 500 500"
+<svelte:body />
+<div
+	bind:this={canvasEl}
+	class=" block relative w-full h-screen overflow-hidden"
+	style="background-color:#f1f6f8;"
 	on:mousedown|stopPropagation={mouseEvent('down')}
 	on:mousemove|stopPropagation={mouseEvent('move')}
 	on:mouseup|stopPropagation={mouseEvent('up')}
+	on:mousewheel={mouseEvent('scroll')}
 >
-	<g width="100%" height="100%" transform={$transform} style="transform-origin: 50% 50%;">
-		
-
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	style="position:absolute;top:0;left:0;width:100%;height:100%;"
+	viewBox={viewBox}
+>
+	<g style="width:100%;height:100%;transform-origin: 50% 50%;" transform={$transform}>
 		<path
 			d={drawPath(data.tables.table1, data.tables.table2)}
 			pointer-events="visibleStroke"
@@ -52,11 +64,21 @@
 			style=""
 			stroke-width="1.5"
 		/>
-		{#each tables as tableName}
-			<Table bind:x={data.tables[tableName].x} bind:y={data.tables[tableName].y} bind:width={data.tables[tableName].width} />
-		{/each}
 	</g>
+	<!-- {#each tables as tableName}
+		<Table bind:x={data.tables[tableName].x} bind:y={data.tables[tableName].y} bind:width={data.tables[tableName].width} />
+	{/each} -->
 </svg>
+	<div class=" block absolute inset-0" style="transform-origin: 50% 50%;transform:{$transform};">
+		{#each tables as tableName}
+			<NewTable
+				bind:x={data.tables[tableName].x}
+				bind:y={data.tables[tableName].y}
+				bind:width={data.tables[tableName].width}
+			/>
+		{/each}
+	</div>
+</div>
 
 <style style lang="postcss">
 </style>

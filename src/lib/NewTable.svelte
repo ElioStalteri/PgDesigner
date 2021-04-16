@@ -1,66 +1,67 @@
 <script>
 	import { mouseEvent } from './transform';
-    import { spring } from 'svelte/motion';
+	import { spring } from 'svelte/motion';
 
 	// your script goes here
 	let table;
 	let height = 0;
 	export let width = 0;
-    const refreshDimension = ()=>{
-        if (table) {
-            height = table.offsetHeight+10;
-            width =table.offsetWidth;
-        }
-    }
+	const refreshDimension = () => {
+		if (table) {
+			height = table.offsetHeight + 10;
+			width = table.offsetWidth;
+		}
+	};
 
-	$:if (table)refreshDimension()
+	$: if (table) refreshDimension();
 
-    
 	export let x = Math.floor(Math.random() * 500);
 	export let y = Math.floor(Math.random() * 500);
-    const pos = spring({ x, y }, {
-		stiffness: 0.4,
-		damping: 1
-	})
-    $: pos.set({ x, y })
+	// const pos = spring(
+	// 	{ x, y },
+	// 	{
+	// 		stiffness: 0.4,
+	// 		damping: 1
+	// 	}
+	// );
+	// $: pos.set({ x, y });
 </script>
 
-<foreignObject class="node" x={x} y={y} height="{height}px" width="{width}px">
-	<body style="margin:0;padding:0; user-select: none;padding-top:5px;"
-		><div
-			bind:this={table}
-			class="relative bg-gray-300 p-5px hover:cursor-pointer"
+<div
+	bind:this={table}
+	class="absolute p-5px select-none min-w-max"
+	style="left:{x}px;top:{y}px;min-width: 256px;max-width: 360px;"
+>
+	<div
+		class=" bg-gray-100 rounded-lg overflow-hidden shadow-md border-t-8 border-green-500 hover:shadow-lg leading-tight"
+	>
+		<div
+			class="py-5 justify-center flex flex-row hover:cursor-pointer text-xl uppercase"
+			on:mousedown|stopPropagation={mouseEvent('downObject', ([deltaX, deltaY]) => {
+				x += deltaX;
+				y += deltaY;
+			})}
+			on:mouseup|stopPropagation={mouseEvent('up')}
 		>
-			<div
-				class="rounded-lg overflow-hidden shadow-md border-t-8 border-green-500 hover:shadow-lg leading-tight"
-				
-			>
-				<div class="py-5 justify-center flex flex-row">
-					<span>user</span>
+			<span>user</span>
+		</div>
+		<div class="flex flex-col bg-white shadow-md text-lg">
+			<div class="flex flex-row items-center pr-4 pl-2 py-1">
+				<span data-v-e2c8d50c="" class="mr-1 text-gray-800 flex-shrink-0"
+					><i class="fa fa-key" /></span
+				>
+				<div
+					data-v-e2c8d50c=""
+					class="flex-grow text-grey-darker break-all flex flex-row items-center font-bold"
+				>
+					id
 				</div>
-				<div class="flex flex-col bg-white shadow-md">
-					<div class="flex flex-row items-center">
-						<span
-							data-v-e2c8d50c=""
-							class="mr-1 text-gray-800 flex-shrink-0"
-							><i  class="fa fa-key" /></span
-						>
-						<div
-							data-v-e2c8d50c=""
-							class="flex-grow text-grey-darker break-all flex flex-row items-center font-bold"
-						>
-							id
-							
-						</div>
-						<span
-							data-v-e2c8d50c=""
-							class="flex-grow-0 opacity-25 group-hover:opacity-100 ml-1"
-						>
-							int</span
-						>
-					</div>
-				</div>
-				<!-- <div
+				<span data-v-e2c8d50c="" class="flex-grow-0 opacity-25 group-hover:opacity-100 ml-1">
+					int</span
+				>
+			</div>
+		</div>
+		<!-- <div
 					data-v-5f2bcc2a=""
 					class="card--header bg-grey-lightest border border-b border-gray-300"
 					on:mousedown|stopPropagation={mouseEvent('downObject', ([deltaX, deltaY]) => {
@@ -314,10 +315,8 @@
 						</div>
 					</div>
 				</div> -->
-			</div>
-		</div>
-	</body>
-</foreignObject>
+	</div>
+</div>
 
 <style>
 	/*! CSS Used from: https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css */
@@ -335,7 +334,7 @@
 	.fa-snowflake-o:before {
 		content: '\f2dc';
 	}
-	
+
 	/*! CSS Used fontfaces */
 	@font-face {
 		font-family: 'FontAwesome';
